@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>demo</title>
+	<script src="MyScroll.js"></script>
+</head>
+<body style="height: 2200px;">
+	<script>
+	new MyScroll({
+		"color":"rgb(10, 116, 218)",//进度条颜色
+		"debounce":50,//节流时间ms
+		"height":"3px",//进度条高度
+		"debug":false,//调试模式
+		"type":'up-down',//up-down从上往下滑触发 down-up从下往上滑触发 all都能触发
+		"event":[
+			{
+				"loop":true,
+				"height":"200px",
+				"type":"down-up",
+				"func":function(){
+					console.log('我到200px了');
+				}
+			},
+			{
+				"loop":false,
+				"height":"100%",
+				"func":function(){
+					console.log('到底了');
+				}
+			}
+		]
+	});
+	</script>
+</body>
+</html>
