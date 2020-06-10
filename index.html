@@ -110,7 +110,9 @@
 				</el-col>
 				<el-col :span="6">
 					<div class="grid-content bg-purple">
-						<button v-if="item==4" id="submit">提交</button></button>
+						<button v-if="item==4" id="submit">提交</button>
+						<div v-if="item==4" id="submit-ff" style="transform: translateY(100px);width: 0;height:0;opacity: 0;">ff
+						</div>
 					</div>
 				</el-col>
 				<el-col :span="6">
@@ -168,30 +170,30 @@
 			"debug": true, //调试模式
 			"type": 'up-down', //up-down从上往下滑触发 down-up从下往上滑触发 all都能触发
 			"event": [{
-					"loop": true,
+					"loop": false,
 					"height": "200px",
 					"type": "up-down",
 					"func": function () {
 						totast('当前模式:up-down', '距顶部高度:200px', '事件不会失效')
 					}
 				},
+				// {
+				// 	"loop": true,
+				// 	"height": "400px",
+				// 	"type": "all",
+				// 	"func": function () {
+				// 		totast('当前模式:all', '距顶部高度:400px', '事件不会失效')
+				// 	}
+				// },
+				// {
+				// 	"loop": false,
+				// 	"height": "100%",
+				// 	"func": function () {
+				// 		totast('当前模式:up-down', '距顶部高度:100%', '触发一次后失效')
+				// 	}
+				// },
 				{
-					"loop": true,
-					"height": "400px",
-					"type": "all",
-					"func": function () {
-						totast('当前模式:all', '距顶部高度:400px', '事件不会失效')
-					}
-				},
-				{
-					"loop": false,
-					"height": "100%",
-					"func": function () {
-						totast('当前模式:up-down', '距顶部高度:100%', '触发一次后失效')
-					}
-				},
-				{
-					"el": "#submit",
+					"el": "#submit-ff",
 					"loop": false,
 					"height": "100%",
 					"func": function () {

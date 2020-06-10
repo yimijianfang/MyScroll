@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>myScroll</title>
+  <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.1/theme-chalk/index.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.0.3/styles/atom-one-dark.min.css" rel="stylesheet">
+  <style>
+  </style>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.6/vue.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.1/index.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+  <script src="../MyScroll.js"></script>
+  <style>
+    pre,
+    code {
+      white-space: pre;
+      overflow-x: scroll;
+    }
+
+    .container {
+      text-align: center;
+      margin-bottom: 200px;
+    }
+
+    #testimg {
+      width: 300px;
+      transition: all 0.5s;
+      cursor: pointer;
+    }
+
+    .animation1 {
+      animation: animatetype1 3s infinite;
+    }
+
+    @keyframes animatetype1 {
+      0% {
+        transform: rotateY(0deg)
+      }
+
+      20% {
+        transform: rotateY(180deg)
+      }
+
+      100% {
+        transform: rotateY(1800deg)
+      }
+    }
+
+    .target-shadow {
+      /* width: 0;
+      height: 0;
+      opacity: 0;
+      outline: 0;
+      z-index: -1; */
+    }
+
+    #testimg-shadow {
+      transform: translateY(100px);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <h3>MyScroll，一款在顶部显示浏览进度同时支持丰富滚动事件的原生js插件。</h3>
+    <code class="javascript">
+      // 指定距离触发
+      new MyScroll({
+      "event": [{
+      "height": "100%", //触发条件 支持px和百分比
+      "loop": true, //是否循环使用 true/false 设置false后执行执行一次后会销毁
+      "type": "up-down", //触发方式 支持up-down down-up all三种方式
+      "func": function () {
+      alert('我到底部了')
+      } //触发后执行的方法
+      }]
+      });
+    </code>
+    <div style="height: 600px;padding-top: 50px;">
+
+    </div>
+    <div class="container">
+      <img id="testimg" src="http://www.jq22.com/img/cs/500x500-9.png " alt="">
+      <div id="testimg-shadow" class="target-shadow">看到我的时候动画就开始了，真实场景中可以把我隐藏。</div>
+    </div>
+    <el-backtop></el-backtop>
+  </div>
+  <script>
+    var vue = new Vue({
+      el: "#app",
+      data: {
+
+      },
+      methods: {
+
+      }
+    })
+    const preEl = document.querySelectorAll('code')
+    preEl.forEach((el) => {
+      hljs.highlightBlock(el)
+    })
+  </script>
+  <script>
+    let scroll = new MyScroll({
+      debug: true,
+      "event": [{
+        "height": "200px",
+        "loop": false,
+        "type": "up-down",
+        "func": function () {
+          vue.$notify({
+            title: 'tips',
+            message: '据顶部200px时触发,且只触发一次',
+            type: 'success'
+          });
+        }
+      }, {
+        "el": "#testimg-shadow",
+        "loop": false,
+        "func": function () {
+          document.querySelector("#testimg").classList = ['animation1'];
+        }
+      }, {
+        "height": "100%",
+        "loop": true,
+        "type": "up-down",
+        "func": function () {
+          vue.$notify({
+            title: 'tips',
+            message: '我到底了',
+            type: 'success'
+          });
+        }
+      }]
+    });
+  </script>
+</body>
+
+</html>
