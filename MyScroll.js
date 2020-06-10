@@ -3,17 +3,17 @@
 		var that = this;
 		//默认配置项
 		defaultConfig = {
+			"showBar": true,
 			"color": "rgb(10, 116, 218)", //进度条颜色
 			"height": "3px", //进度条高度
 			"debug": false, //调试模式
-			"type": 'up-down', //up-down从上往下滑触发 down-up从下往上滑触发 all都能触发
 			"event": []
 		};
 		//event数组对象
 		// {
+		//  "showBar": true,//是否显示进度条	
 		// 	"loop":false,//是否循环 true一直触发false触发一次
 		// 	"height":"100%",//触发高度支持px和百分比
-		// 	"type":"all",//同上，不过此优先级高
 		// 	"func":function(){
 		// 		console.log('到底了');
 		// 	}//方法
@@ -23,7 +23,9 @@
 		//事件
 		this.event = mergeConfig.event;
 		//渲染dom
-		this.loadBar();
+		if (mergeConfig.showBar) {
+			this.loadBar();
+		}
 		this.preHeight = this.getScrollTop();
 		this.nextHeight = this.getScrollTop();
 		//监听
@@ -38,7 +40,9 @@
 				// 滚动条距离底部的高度
 				bheight = rheight - theight - height;
 			var per = (theight / (theight + bheight)).toFixed(4) * 100 + '%';
-			document.getElementById('progressBar').style.width = per;
+			if (that.config.showBar) {
+				document.getElementById('progressBar').style.width = per;
+			}
 			if (that.config.debug) {
 				document.getElementById('debugShow').innerHTML = '此时浏览器可见区域高度为：' + height + '<br />此时文档内容实际高度为：' + rheight + '<br />此时滚动条距离顶部的高度为：' + theight + '<br />此时滚动条距离底部的高度为：' + bheight;
 			}
@@ -59,7 +63,7 @@
 					p[item] = loop(p1[item], p2[item]);
 				} else {
 					/**自定义配置项覆盖默认配置**/
-					if ((typeof p1) != 'undefined' && (typeof p1[item]) != 'undefined' && p1[item]) {
+					if ((typeof p1) != 'undefined' && (typeof p1[item]) != 'undefined') {
 						p[item] = p1[item];
 					} else {
 						p[item] = p2[item];
@@ -126,8 +130,8 @@
 		var nextHeight = this.nextHeight;
 		for (var e in event) {
 			var value = event[e];
-			var index = value.height.indexOf("px");
-			var type = value.type ? value.type : this.config.type; //获取类型
+			var index = (value.height || '0').indexOf("px");
+			var type = value.type ? value.type : 'up-down'; //获取类型
 			var height = 0;
 			var totalHeight = 0;
 			if (index != -1) {
@@ -139,7 +143,7 @@
 			}
 			var isConfirm = false;
 			if (value.el) {
-				if (isInViewPort(document.querySelector(value.el))) {
+				if (isInViewPort(value.el)) {
 					isConfirm = true;
 				}
 			} else {
@@ -179,11 +183,22 @@
 		str = str / 100;
 		return str;
 	}
-	//是否可是窗口能看到(只支持从上到下滚动)
+	//是否可是窗口能看到(仅支持从上到下滚动)
 	function isInViewPort(el) {
+		el = getSelector(el);
 		const viewPortHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
 		const top = el.getBoundingClientRect() && el.getBoundingClientRect().top
 		return top <= viewPortHeight
+	}
+	//获取selector
+	function getSelector(el) {
+		if (el instanceof Node) {
+			return el;
+		} else if (typeof el == 'string') {
+			return document.querySelector(el);
+		} else {
+			console.warn("[MyScroll] warn Invalid element", el)
+		}
 	}
 
 	window.MyScroll = MyScroll;
