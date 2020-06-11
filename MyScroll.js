@@ -9,15 +9,6 @@
 			"debug": false, //调试模式
 			"event": []
 		};
-		//event数组对象
-		// {
-		//  "showBar": true,//是否显示进度条	
-		// 	"loop":false,//是否循环 true一直触发false触发一次
-		// 	"height":"100%",//触发高度支持px和百分比
-		// 	"func":function(){
-		// 		console.log('到底了');
-		// 	}//方法
-		// }
 		//合并配置项
 		var mergeConfig = this.config = this.extend(config, defaultConfig);
 		//事件
@@ -112,7 +103,7 @@
 	};
 	//渲染调试dom
 	MyScroll.prototype.loadDebug = function () {
-		var dom = '<div id="debugShow" style="position: fixed;top:200px;"></div>';
+		var dom = '<div id="debugShow" style="position: fixed;bottom:50px;background:rgba(0,0,0,0.7);border-radius:5px;padding:20px;color:#fff">⚝</div>';
 		document.write(dom);
 	};
 	//执行触发的事件
@@ -143,7 +134,7 @@
 			}
 			var isConfirm = false;
 			if (value.el) {
-				if (isInViewPort(value.el)) {
+				if (isInViewPort(value.el, height)) {
 					isConfirm = true;
 				}
 			} else {
@@ -184,11 +175,13 @@
 		return str;
 	}
 	//是否可是窗口能看到(仅支持从上到下滚动)
-	function isInViewPort(el) {
+	//el: 目标元素
+	//height: 与目标元素距离 正数=>距离目标元素下方指定距离时触发 负数=>距离目标元素上方指定距离时触发
+	function isInViewPort(el, height) {
 		el = getSelector(el);
 		const viewPortHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
 		const top = el.getBoundingClientRect() && el.getBoundingClientRect().top
-		return top <= viewPortHeight
+		return top <= viewPortHeight - height
 	}
 	//获取selector
 	function getSelector(el) {
