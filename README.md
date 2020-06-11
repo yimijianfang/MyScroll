@@ -1,7 +1,7 @@
 # yimijianfang
 MyScroll，一款在顶部显示浏览进度同时支持丰富滚动事件的原生js插件。
 
-## [演示地址](https://yimijianfang.github.io/MyScroll/demo1.html)
+## [演示地址](https://yimijianfang.github.io/MyScroll)
 
 ### 用法：
 1. 引入MyScroll.js
